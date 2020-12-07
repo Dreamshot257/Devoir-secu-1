@@ -1,0 +1,14 @@
+FROM centos:latest
+
+# -- Install all needed packages during build--
+RUN yum update -y && yum install -y python3-pip && \
+    pip3 install safety && \
+    pip3 install insecure-package && \
+    yum install -y git
+
+# -- install experimentation package --
+CMD git clone https://github.com/akoumjian/python-safety-vuln.git && \
+    cd python-safety-vuln && \
+    pip3 install dist/malicious-0.1-py3-none-any.whl && \
+    echo -e "\n\n\nSafety check apres avoir applique la faille\n" && \
+    safety check
